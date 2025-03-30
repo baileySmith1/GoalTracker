@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Goal Tracker</title>
-</head>
-<body>
-    <h1>Dashboard Page</h1>
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Daily Goal Tracker</title>
+    </head>
+    <br>
+    <body>
+        <h1>Today's Goals</h1>
+    </body>
+    <br>
+    <table>
+        <tr>
+            <th>Habit Name</th>
+            <th>Description</th>
+            <th>Completed?</th>
+        </tr>
+        <tr th:each="habit : ${habits}">
+            <td th:text="${habit.name}"></td>
+            <td th:text="${habit.description}"></td>
+            <td><input type="checkbox" th:checked="${habit.checked}"></td> <!-- may need to fix this -->
+        </tr>
 
+    </table>
 </html>
