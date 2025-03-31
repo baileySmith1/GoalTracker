@@ -17,7 +17,7 @@
         <tr th:each="habit : ${habits}">
             <td th:text="${habit.name}"></td>
             <td th:text="${habit.description}"></td>
-            <td><input type="checkbox" th:checked="${habit.checked}"></td> <!-- may need to fix this -->
+            <td><input type="checkbox" th:id="${habit}"></td> 
         </tr>
 
     </table>
