@@ -1,6 +1,8 @@
 package org.example.MavenProject;
 
+import org.example.MavenProject.DBModel.Habit;
 import org.example.MavenProject.DBModel.Users;
+import org.example.MavenProject.DBRepository.HabitRepo;
 import org.example.MavenProject.DBRepository.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import java.util.List;
 public class AppController {
 
     @Autowired private UsersRepo usersRepo;
+    @Autowired private HabitRepo habitsRepo;
     private String currUsername;
     private String currPassword;
     private String currId;
@@ -45,6 +48,13 @@ public class AppController {
         }
     }
 
+    @GetMapping("/logout")
+    public String logout(){
+        currUsername = null;
+        currPassword = null;
+        return "redirect:/login";
+    }
+
     @GetMapping("/createAccount")
     public String createAccount(){
         return "accountPage";
@@ -57,7 +67,30 @@ public class AppController {
 
     @GetMapping("/dashboard")
     public String dashboard(){
-        return "dashboardPage";
+        if(currUsername == null){
+            return "redirect:/login";
+        }
+        else{
+
+            return "dashboardPage";
+        }
+    }
+
+    @GetMapping("/addGoal")
+    public String addGoal(){
+        return "addGoalPage";
+    }
+    @PostMapping("/addingGoal")
+    public String addingGoal(@RequestParam String name, String description){
+        Habit h = new Habit(currUsername, name, description);
+        habitsRepo.save(h);
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/removeGoal")
+    public String removeGoal(){
+        List<Habit> habits = habitsRepo.getGoals(currUsername);
+        return "removeGoalPage";
     }
 
 }

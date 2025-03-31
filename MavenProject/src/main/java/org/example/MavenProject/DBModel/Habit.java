@@ -1,12 +1,14 @@
-package org.example.MavenProject;
+package org.example.MavenProject.DBModel;
 
 public class Habit {
 
+    String username;
     String name;
     String description;
     Boolean isCompleted = false;
 
-    public Habit(String name, String description){
+    public Habit(String username, String name, String description){
+        this.username = username;
         this.name = name;
         this.description = description;
 

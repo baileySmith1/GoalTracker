@@ -19,6 +19,10 @@
             <td th:text="${habit.description}"></td>
             <td><input type="checkbox" th:checked="${habit.checked}"></td> <!-- may need to fix this -->
         </tr>
-
     </table>
+
+    <br><br>
+    <a href="/logout"><button>Logout</button></a>
+    <a href="/addGoal"><button>Add Goal</button></a>
+    <a href="/removeGoal"><button>Remove Goal</button></a>
 </html>

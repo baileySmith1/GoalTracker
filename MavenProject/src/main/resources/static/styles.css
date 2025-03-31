@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #a0dff5;
+    font-family: sans-serif;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 40px;
+  }
+  
+  .goal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .goal {
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 15px;
+    padding: 15px 20px;
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease;
+  }
+  
+  .goal.checked {
+    background-color: #5b89b0;
+    color: white;
+  }
+  
+  .checkmark {
+    border: 3px solid black;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+  }
+  
+  .goal.checked .checkmark {
+    border-color: #008ecf;
+    background-color: #a0dff5;
+  }
+  
+  .side-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .side-buttons img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+  
+  .ai-button {
+    margin-top: 40px;
+  }
+  
