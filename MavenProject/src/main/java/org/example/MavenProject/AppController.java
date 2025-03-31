@@ -18,7 +18,12 @@ public class AppController {
 
     @GetMapping("/")
     public String redirect(){
-        return "redirect:/login";
+        if(currUsername == null){
+            return "redirect:/login";
+        }
+        else{
+            return "redirect:/dashboard";
+        }
     }
 
     @GetMapping("/login")
@@ -31,13 +36,11 @@ public class AppController {
         currPassword = password;
         List<Users> test = usersRepo.checkUserPass(username,password);
         if(!(test.isEmpty())){
-            System.out.println(test);
             test.clear();
             return "redirect:/dashboard";
         }
         else{
-            System.out.println(test);
-            test.clear();
+            //PRINT AN ERROR IF LOGIN FAILED
             return "loginPage";
         }
     }
