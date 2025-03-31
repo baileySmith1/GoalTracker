@@ -33,6 +33,7 @@ public class AppController {
     public String login(){
         return "loginPage";
     }
+
     @PostMapping("/loginAttempt")
     public String loginAttempt(@RequestParam String username, String password){
         currUsername = username;
@@ -59,6 +60,7 @@ public class AppController {
     public String createAccount(){
         return "accountPage";
     }
+
     @PostMapping("/register")
     public String registerAccount(@ModelAttribute Users user){
         usersRepo.save(user);
@@ -71,15 +73,21 @@ public class AppController {
             return "redirect:/login";
         }
         else{
-
-            return "dashboardPage";
+            List<Habit> habits = habitsRepo.getGoals(currUsername);
+            return "altDashboardPage";
         }
     }
 
     @GetMapping("/addGoal")
     public String addGoal(){
-        return "addGoalPage";
+        if(currUsername == null){
+            return "redirect:/login";
+        }
+        else {
+            return "addGoalPage";
+        }
     }
+
     @PostMapping("/addingGoal")
     public String addingGoal(@RequestParam String name, String description){
         Habit h = new Habit(currUsername, name, description);
@@ -89,8 +97,13 @@ public class AppController {
 
     @GetMapping("/removeGoal")
     public String removeGoal(){
-        List<Habit> habits = habitsRepo.getGoals(currUsername);
-        return "removeGoalPage";
+        if(currUsername == null){
+            return "redirect:/login";
+        }
+        else {
+            List<Habit> habits = habitsRepo.getGoals(currUsername);
+            return "removeGoalPage";
+        }
     }
 
 }
