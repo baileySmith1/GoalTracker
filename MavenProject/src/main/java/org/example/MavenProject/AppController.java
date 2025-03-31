@@ -32,9 +32,21 @@ public class AppController {
         return "accountPage";
     }
 
-    @GetMapping("/dashboard")
-    public String dashboard(){
+     @GetMapping("/dashboard")//whenever /dashboard html file visited this method runs
+    public String dashboard(Model m){
+
+        ArrayList<Habit> habits = new ArrayList<>();
+        habits.add(new Habit("Gym", "lift weights"));
+        habits.add(new Habit("HW", "Study"));
+        habits.add(new Habit("HW", "Do Essay"));
+        habits.add(new Habit("Protein", "drink protein shake"));
+
+        m.addAttribute(habits);//habits added to model, used to pass data to thymeleaf in html file
+        // this above will be prepopulated from database
+
+
         return "dashboardPage";
     }
+
 
 }
