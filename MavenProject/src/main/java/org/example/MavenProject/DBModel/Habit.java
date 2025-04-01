@@ -13,4 +13,21 @@ public class Habit {
         this.description = description;
 
     }
+    public Habit( String name, String description){//for testing
+        this.name = name;
+        this.description = description;
+
+    }
+    public Boolean getCompleted() {
+        return isCompleted;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getDescription() {
+        return description;
+    }
 }
