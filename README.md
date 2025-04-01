@@ -2,7 +2,7 @@ need to add:
 
 -remove goal
 
--goals appear on dashboard
+-can check goals on dashboard that updates db
 
 -goals appear on removing goal
 
