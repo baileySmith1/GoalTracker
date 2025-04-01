@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Daily Goal Tracker</title>
-    </head>
-    <br>
-    <body>
-        <h1>Today's Goals</h1>
-    </body>
-    <br>
-    <table>
-        <tr>
-            <th>Habit Name</th>
-            <th>Description</th>
-            <th>Completed?</th>
-        </tr>
-        <tr th:each="habit : ${habits}">
-            <td th:text="${habit.name}"></td>
-            <td th:text="${habit.description}"></td>
-            <td><input type="checkbox" th:checked="${habit.checked}"></td> <!-- may need to fix this -->
-        </tr>
-    </table>
-
-    <br><br>
-    <a href="/logout"><button>Logout</button></a>
-    <a href="/addGoal"><button>Add Goal</button></a>
-    <a href="/removeGoal"><button>Remove Goal</button></a>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Habit Tracker</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+<body>
+<div class="container">
+    <div class="goal-list">
+        <div class="goal checked" th:each="habit : ${habits}">
+            <span th:text="${habit.name}"></span>
+            <span th:text="${habit.description}"></span>
+            <div class="checkmark">✔</div>
+        </div>
+    </div>
+</div>
+    <div class="side-buttons">
+        <a href="/addGoal"><img src="images/plus.png" alt="Add Goal" /></a>
+        <img src="images/minus.png" alt="Remove Goal" />
+        <a href="/logout"><img src="images/logout.png" alt="Logout"/></a>
+    </div>
+</body>
 </html>
