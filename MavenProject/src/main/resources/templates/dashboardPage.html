@@ -7,19 +7,20 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
 <body>
-<div class="container">
-    <div class="goal-list">
-        <div class="goal checked" th:each="habit : ${habits}">
-            <span th:text="${habit.name}"></span>
-            <span th:text="${habit.description}"></span>
-            <div class="checkmark">✔</div>
+    <div class="container">
+        <div class="goal-list">
+            <h1>Daily Habit Tracker</h1>
+            <div class="goal checked" th:each="habit : ${habits}">
+                <span th:text="${habit.name}"></span>
+                <span th:text="${habit.description}"></span>
+                <div class="checkmark">✔</div>
+            </div>
         </div>
-    </div>
-</div>
-    <div class="side-buttons">
-        <a href="/addGoal"><img src="images/plus.png" alt="Add Goal" /></a>
-        <img src="images/minus.png" alt="Remove Goal" />
-        <a href="/logout"><img src="images/logout.png" alt="Logout"/></a>
+        <div class="side-buttons">
+            <a href="/addGoal"><img src="images/plus.png" alt="Add Goal" /></a>
+            <img src="images/minus.png" alt="Remove Goal" />
+            <a href="/logout"><img src="images/logout.png" alt="Logout"/></a>
+        </div>
     </div>
 </body>
 </html>
