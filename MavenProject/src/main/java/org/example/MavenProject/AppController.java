@@ -6,8 +6,10 @@ import org.example.MavenProject.DBRepository.HabitRepo;
 import org.example.MavenProject.DBRepository.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -68,12 +70,21 @@ public class AppController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(){
+    public String dashboard(Model m){
         if(currUsername == null){
             return "redirect:/login";
         }
         else{
-            List<Habit> habits = habitsRepo.getGoals(currUsername);
+            //List<Habit> habits = habitsRepo.getGoals(currUsername);
+            ArrayList<Habit> habits = new ArrayList<>();
+            habits.add(new Habit("Gym", "lift weights"));
+            habits.add(new Habit("HW", "Study"));
+            habits.add(new Habit("HW", "Do Essay"));
+            habits.add(new Habit("Protein", "drink protein shake"));
+
+            m.addAttribute(habits);//habits added to model, used to pass data to thymeleaf in html file
+            // this above will be prepopulated from database
+
             return "altDashboardPage";
         }
     }
