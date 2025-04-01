@@ -65,8 +65,16 @@ public class AppController {
 
     @PostMapping("/register")
     public String registerAccount(@ModelAttribute Users user){
-        usersRepo.save(user);
-        return "accountPage";
+        List<Users> test = usersRepo.checkUser(user.getUsername());
+        if(test.isEmpty()){
+            usersRepo.save(user);
+            return "redirect:/login";
+        }
+        else{
+            //DISPLAY THAT THIS USERNAME EXISTS
+            test.clear();
+            return "accountPage";
+        }
     }
 
     @GetMapping("/dashboard")

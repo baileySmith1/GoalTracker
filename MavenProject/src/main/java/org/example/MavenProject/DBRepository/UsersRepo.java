@@ -9,4 +9,7 @@ public interface UsersRepo extends MongoRepository<Users, String> {
 
     @Query("{username : ?0, password : ?1}")
     List<Users> checkUserPass(String user, String pass);
+
+    @Query("{username : ?0}")
+    List<Users> checkUser(String user);
 }
