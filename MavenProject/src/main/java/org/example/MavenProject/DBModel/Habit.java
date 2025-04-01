@@ -11,12 +11,6 @@ public class Habit {
         this.username = username;
         this.name = name;
         this.description = description;
-
-    }
-    public Habit( String name, String description){//for testing
-        this.name = name;
-        this.description = description;
-
     }
     public Boolean getCompleted() {
         return isCompleted;

@@ -75,13 +75,8 @@ public class AppController {
             return "redirect:/login";
         }
         else{
-            //List<Habit> habits = habitsRepo.getGoals(currUsername);
-            ArrayList<Habit> habits = new ArrayList<>();
-            habits.add(new Habit("Gym", "lift weights"));
-            habits.add(new Habit("HW", "Study"));
-            habits.add(new Habit("HW", "Do Essay"));
-            habits.add(new Habit("Protein", "drink protein shake"));
-
+            List<Habit> habits = habitsRepo.getGoals(currUsername);
+            //System.out.println(habits);
             m.addAttribute("habits", habits);//habits added to model, used to pass data to thymeleaf in html file
             // this above will be prepopulated from database
 
