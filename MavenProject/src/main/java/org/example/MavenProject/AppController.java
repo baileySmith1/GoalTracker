@@ -82,10 +82,10 @@ public class AppController {
             habits.add(new Habit("HW", "Do Essay"));
             habits.add(new Habit("Protein", "drink protein shake"));
 
-            m.addAttribute(habits);//habits added to model, used to pass data to thymeleaf in html file
+            m.addAttribute("habits", habits);//habits added to model, used to pass data to thymeleaf in html file
             // this above will be prepopulated from database
 
-            return "altDashboardPage";
+            return "dashboardPage";
         }
     }
 
