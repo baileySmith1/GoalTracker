@@ -1,14 +1,12 @@
 need to add:
 
--remove goal
+-remove goal + update db
 
 -can check goals on dashboard that updates db
 
--goals appear on removing goal
+-goals appear on removing goal page
 
 -block some url if not logged in
-
--center goals on dashboard
 
 -css for other pages
 
