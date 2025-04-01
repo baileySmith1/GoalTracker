@@ -7,14 +7,16 @@ body {
   
   .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
+    position: relative;
     padding: 40px;
   }
   
   .goal-list {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 20px;
   }
   
@@ -56,6 +58,8 @@ body {
     flex-direction: column;
     gap: 20px;
     align-items: center;
+    position: absolute;
+    left: 1000px;
   }
   
   .side-buttons img {
