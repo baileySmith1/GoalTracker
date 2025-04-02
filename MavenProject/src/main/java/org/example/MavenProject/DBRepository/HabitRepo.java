@@ -11,4 +11,7 @@ public interface HabitRepo extends MongoRepository<Habit, String> {
     @Query("{username : ?0}")
     List<Habit> getGoals(String user);
 
+    @Query(value = "{username : ?0, name: ?1}", delete = true)
+    Habit deleteByName(String user, String name);
+
 }

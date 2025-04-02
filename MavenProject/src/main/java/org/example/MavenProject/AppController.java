@@ -84,10 +84,7 @@ public class AppController {
         }
         else{
             List<Habit> habits = habitsRepo.getGoals(currUsername);
-            //System.out.println(habits);
             m.addAttribute("habits", habits);//habits added to model, used to pass data to thymeleaf in html file
-            // this above will be prepopulated from database
-
             return "dashboardPage";
         }
     }
@@ -110,14 +107,20 @@ public class AppController {
     }
 
     @GetMapping("/removeGoal")
-    public String removeGoal(){
+    public String removeGoal(Model m){
         if(currUsername == null){
             return "redirect:/login";
         }
         else {
             List<Habit> habits = habitsRepo.getGoals(currUsername);
+            m.addAttribute("habits", habits);//habits added to model, used to pass data to thymeleaf in html file
             return "removeGoalPage";
         }
+    }
+    @PostMapping("/removeGoal")
+    public String removingGoal(@RequestParam String name){
+        habitsRepo.deleteByName(currUsername, name);
+        return "redirect:/dashboard";
     }
 
 }
