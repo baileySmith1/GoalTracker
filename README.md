@@ -1,12 +1,6 @@
 need to add:
 
--remove goal + update db
-
 -can check goals on dashboard that updates db
-
--goals appear on removing goal page
-
--block some url if not logged in
 
 -css for other pages
 
