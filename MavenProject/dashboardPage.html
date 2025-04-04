@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Habit Tracker</title>
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="goal-list">
+            <h1>Daily Habit Tracker</h1>
+            <div class="goal checked" th:each="habit : ${habits}">
+                <span th:text="${habit.name}"></span>
+                <span th:text="${habit.description}"></span>
+                <div class="checkmark">✔</div>
+            </div>
+        </div>
+        <div class="side-buttons">
+            <a href="/addGoal"><img src="images/plus.png" alt="Add Goal" /></a>
+            <a href="/removeGoal"><img src="images/minus.png" alt="Remove Goal" /></a>
+            <a href="/logout"><img src="images/logout.png" alt="Logout"/></a>
+        </div>
+    </div>
+</body>
+</html>
