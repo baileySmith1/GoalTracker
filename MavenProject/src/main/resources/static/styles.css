@@ -71,4 +71,20 @@ body {
   .ai-button {
     margin-top: 40px;
   }
-  
+
+.full-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  width: 900%;
+  max-width: 10000px;
+  box-sizing: border-box;
+  padding: 40px;
+}
+
+
+
