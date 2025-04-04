@@ -2,27 +2,27 @@
 <html lang="en">
 <head>
     <title>Goal Tracker Login</title>
+    <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-
-<h1>Create an Account</h1>
-<h2>Please fill out the information below</h2>
-<br>
-
-<form action="register" method="post">
-
-<label for="username">Username:</label><br>
-<input type="text" id="username" name="username"><br>
-<label for="password">Password:</label><br>
-<input type="text" id="password" name="password"><br><br>
-<input type="submit" value="Submit">
-
-</form>
-
-<br><br>
-<label for="hyper">All finished?</label><br>
-<a href="login" id="hyper">Login Page</a>
-
+<div class="container full-page">
+    <div class="goal login-box">
+        <h1>Create an Account</h1>
+        <h2>Please fill out the information below</h2>
+        <form action="register" method="post">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username"><br>
+            <label for="password">Password:</label><br>
+            <input type="text" id="password" name="password"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <br>
+        <label>All finished?</label><br>
+        <a href="login" id="hyper">Login Page</a>
+    </div>
+</div>
 </body>
+
+
 
 </html>

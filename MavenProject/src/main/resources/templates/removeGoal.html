@@ -2,13 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Remove Goals</title>
+    <link rel="stylesheet" href="./styles.css" />
+
 </head>
 <body>
-<form action="removeGoal" method="post">
-    <select name="goals" id="goals">
-        <option th:each="habit : ${name}" th:text=$"habit.name"></option>
-    </select>
-    <input type="submit" value="Submit">
-</form>
+<div class="container">
+    <div class="goal">
+        <form action="removeGoal" method="post">
+            <label for="name">Select a Goal to Remove:</label><br>
+            <select name="name" id="name">
+                <option th:each="habit : ${habits}" th:text="${habit.name}"></option>
+            </select><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <a href="/dashboard">← Go Back</a>
+    </div>
+</div>
 </body>
+
 </html>

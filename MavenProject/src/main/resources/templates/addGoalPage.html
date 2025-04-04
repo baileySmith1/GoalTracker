@@ -2,15 +2,22 @@
 <html lang="en">
 <head>
     <title>Add Goal</title>
+    <link rel="stylesheet" href="./styles.css" />
+
 </head>
 <body>
-<form action="addingGoal" method="post">
-    <label for="name">Goal Name:</label><br>
-    <input type="text" id="name" name="name"><br>
-    <label for="description">Goal Description:</label><br>
-    <textarea id="description" name="description" rows="10" cols="100"></textarea><br>
-    <input type="submit" value="Submit">
-</form>
-<a href="/dashboard">Go Back</a>
+<div class="container">
+    <div class="goal">
+        <form action="addingGoal" method="post">
+            <label for="name">Goal Name:</label><br>
+            <input type="text" id="name" name="name"><br>
+            <label for="description">Goal Description:</label><br>
+            <textarea id="description" name="description" rows="5" cols="50"></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+        <a href="/dashboard">← Go Back</a>
+    </div>
+</div>
 </body>
+
 </html>
