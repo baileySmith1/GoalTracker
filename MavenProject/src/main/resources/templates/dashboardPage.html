@@ -13,7 +13,12 @@
             <div class="goal checked" th:each="habit : ${habits}">
                 <span th:text="${habit.name}"></span>
                 <span th:text="${habit.description}"></span>
-                <div class="checkmark">✔</div>
+                <div>
+                    <label class="container1">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="side-buttons">
