@@ -1,5 +1,10 @@
 need to add:
 
 -can check goals on dashboard that updates db
+-Make an error appear when user tries to make a duplicate account (specifically on commented lines in "PostMapping /loginattempt" and "PostMapping /register" )
 
--make add/remove goals a popup instead of new page (technically optional, but would be cool if someone knows how to do it)
+- <Somewhat Optional> prevent users making goals with duplicate names
+
+- <Optional> default message on dashboard when no goals are there
+- <Very Optional> button to ask ai for advice on a goal
+- <Very Optional> make add/remove goals a popup instead of new page
