@@ -162,4 +162,13 @@ public class AppController {
         return "redirect:/dashboard";
     }
 
+    @PostMapping("/updateGoalStatus")
+    @ResponseBody
+    public String updateGoalStatus(@RequestParam String name, @RequestParam boolean isCompleted) {
+        if (currUsername == null) {
+            return "error: not logged in";
+        }
+        habitsRepo.checkHabit(currUsername, name, isCompleted);
+        return "success";
+    }
 }
