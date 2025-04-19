@@ -38,7 +38,7 @@ public class AppController {
         return "loginPage";
     }
 
-    @PostMapping("/loginAttempt")
+    @PostMapping("/login")
     public String loginAttempt(@RequestParam String username, String password){
         currUsername = username;
         currPassword = password;
