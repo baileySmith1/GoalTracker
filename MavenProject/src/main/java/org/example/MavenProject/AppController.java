@@ -101,47 +101,24 @@ public class AppController {
         }
     }
     @PostMapping("/addingGoal")
+    @ResponseBody
     public String addingGoal(
             @RequestParam String name,
-            @RequestParam(required = false) String description, // Make description optional
-            RedirectAttributes redirectAttributes) {
-
+            @RequestParam(required = false) String description) {
 
         if(currUsername == null){
-
-            redirectAttributes.addFlashAttribute("loginError", "Please log in to add a habit.");
-            return "redirect:/login";
+            return "error: Please log in to add a habit.";
         }
 
-
         String trimmedName = name.trim();
-
-
         Optional<Habit> existingHabit = habitsRepo.findByUsernameAndNameIgnoreCase(currUsername, trimmedName);
 
-
         if (existingHabit.isPresent()) {
-            // --- Duplicate Found ---
-            // Add error message for the view
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "You already have a habit named '" + trimmedName + "'. Please choose a different name.");
-            // Add submitted values back for form repopulation
-            redirectAttributes.addFlashAttribute("submittedName", trimmedName);
-            redirectAttributes.addFlashAttribute("submittedDescription", description);
-            // Redirect back to the add form
-            return "redirect:/addGoal";
-
+            return "error: You already have a habit named '" + trimmedName + "'. Please choose a different name.";
         } else {
-
-            // Create the new Habit object using the correct constructor
             Habit h = new Habit(currUsername, trimmedName, description);
-            // Save the new habit to the database
             habitsRepo.save(h);
-
-            redirectAttributes.addFlashAttribute("successMessage",
-                    "Habit '" + trimmedName + "' added successfully!");
-            // Redirect to the dashboard
-            return "redirect:/dashboard";
+            return "success";
         }
     }
 
