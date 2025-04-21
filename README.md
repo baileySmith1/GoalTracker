@@ -1,10 +1,11 @@
-need to add:
+To run the program, run GoalTrackerApplication.java found in MavenProject/src/main/java/org../GoalTrackerApplication.java
+Then navigate to localhost:8080 in your browser. 
 
-- Can check goals on dashboard that updates db
-
-- --Somewhat Optional-- Make an error appear when user tries to make a duplicate account (specifically on commented lines in "PostMapping /loginattempt" and "PostMapping /register" )
-- --Somewhat Optional-- prevent users making goals with duplicate names (done) 
-
-- --Optional-- default message on dashboard when no goals are there (in progress) 
-- --Very Optional-- button to ask ai for advice on a goal
-- --Very Optional-- make add/remove goals a popup instead of new page
+Features:
+-Creating accounts
+-Logging in
+-Each user has a unique dashboard which shows their goals
+-Adding Goals with the + icon
+-Removing Goals with the - icon
+-Logging out with the door icon
+-Checking off completed goals, which is saved when user logs out
