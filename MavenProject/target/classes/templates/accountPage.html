@@ -3,17 +3,28 @@
 <head>
     <title>Goal Tracker Login</title>
     <link rel="stylesheet" href="./styles.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="container full-page">
     <div class="goal login-box">
         <h1>Create an Account</h1>
         <h2>Please fill out the information</h2>
-        <form action="register" method="post">
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="success-message" class="success-message" style="display: none;"></div>
+        <form id="createAccountForm" onsubmit="return handleCreateAccount(event)">
             <label for="username">Username:</label><br>
-            <input type="text" id="username" name="username"><br>
+            <input type="text" id="username" name="username" required><br>
             <label for="password">Password:</label><br>
-            <input type="text" id="password" name="password"><br><br>
+            <div class="password-container">
+                <input type="password" id="password" name="password" required>
+                <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+            </div>
+            <label for="confirmPassword">Confirm Password:</label><br>
+            <div class="password-container">
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <span class="toggle-password" onclick="togglePassword('confirmPassword')">👁️</span>
+            </div><br>
             <input type="submit" value="Submit">
         </form>
         <br>
@@ -21,8 +32,60 @@
         <a href="login" id="hyper">Login Page</a>
     </div>
 </div>
+
+<script>
+    function handleCreateAccount(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Clear previous messages
+        document.getElementById('error-message').style.display = 'none';
+        document.getElementById('success-message').style.display = 'none';
+
+        // Validate passwords match
+        if (password !== confirmPassword) {
+            document.getElementById('error-message').textContent = 'Passwords do not match';
+            document.getElementById('error-message').style.display = 'block';
+            return false;
+        }
+
+        $.ajax({
+            url: '/register',
+            method: 'POST',
+            data: {
+                username: username,
+                password: password
+            },
+            success: function(response) {
+                if (response.includes('error')) {
+                    document.getElementById('error-message').textContent = response;
+                    document.getElementById('error-message').style.display = 'block';
+                } else {
+                    document.getElementById('success-message').textContent = 'Account created successfully! Redirecting to login...';
+                    document.getElementById('success-message').style.display = 'block';
+                    setTimeout(function() {
+                        window.location.href = '/login';
+                    }, 2000);
+                }
+            },
+            error: function() {
+                document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
+                document.getElementById('error-message').style.display = 'block';
+            }
+        });
+        return false;
+    }
+
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        if (input.type === 'password') {
+            input.type = 'text';
+        } else {
+            input.type = 'password';
+        }
+    }
+</script>
 </body>
-
-
-
 </html>
