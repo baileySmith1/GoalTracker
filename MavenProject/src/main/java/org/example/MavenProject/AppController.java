@@ -5,18 +5,25 @@ import org.example.MavenProject.DBModel.Users;
 import org.example.MavenProject.DBRepository.HabitRepo;
 import org.example.MavenProject.DBRepository.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.example.MavenProject.util.JWTUtil;
+
 import java.util.Optional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class AppController {
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired
+    JWTUtil JWTUtil;
     @Autowired private UsersRepo usersRepo;
     @Autowired private HabitRepo habitsRepo;
     private String currUsername;
@@ -39,10 +46,13 @@ public class AppController {
     }
 
     @PostMapping("/login")
-    public String loginAttempt(@RequestParam String username, String password){
-        currUsername = username;
-        currPassword = password;
-        List<Users> test = usersRepo.checkUserPass(username,password);
+    public String loginAttempt(@RequestBody AuthRequest authRequest){
+
+    authenticationManager.authenticate( new UsernamePasswordAuthenticationToken((authRequest.getUsername()),(authRequest.getPassword())));
+
+        currUsername = authRequest.getUsername();
+        currPassword = authRequest.getPassword();
+        List<Users> test = usersRepo.checkUserPass(currUsername,currPassword);
         if(!(test.isEmpty())){
             test.clear();
             return "redirect:/dashboard";
