@@ -7,11 +7,14 @@ import org.example.MavenProject.DBRepository.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.example.MavenProject.util.JWTUtil;
+
 
 import java.util.Optional;
 
@@ -22,17 +25,15 @@ public class AppController {
 
     @Autowired
     AuthenticationManager authenticationManager;
-    @Autowired
-    JWTUtil JWTUtil;
     @Autowired private UsersRepo usersRepo;
     @Autowired private HabitRepo habitsRepo;
-    private String currUsername;
-    private String currPassword;
-    private String currId;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @GetMapping("/")
     public String redirect(){
-        if(currUsername == null){
+        if(!SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
             return "redirect:/login";
         }
         else{
@@ -46,18 +47,18 @@ public class AppController {
     }
 
     @PostMapping("/login")
-    public String loginAttempt(@RequestBody AuthRequest authRequest){
+    public String loginAttempt(@ModelAttribute AuthRequest authRequest){
 
-    authenticationManager.authenticate( new UsernamePasswordAuthenticationToken((authRequest.getUsername()),(authRequest.getPassword())));
+       String currUsername = authRequest.getUsername();
+        String currPassword = authRequest.getPassword();
 
-        currUsername = authRequest.getUsername();
-        currPassword = authRequest.getPassword();
-        List<Users> test = usersRepo.checkUserPass(currUsername,currPassword);
-        if(!(test.isEmpty())){
-            test.clear();
+        try{
+
+          Authentication authenticate =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken((authRequest.getUsername()),(authRequest.getPassword())));
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
             return "redirect:/dashboard";
         }
-        else{
+        catch (Exception e){
             //PRINT AN ERROR IF LOGIN FAILED
             return "loginPage";
         }
@@ -65,8 +66,9 @@ public class AppController {
 
     @GetMapping("/logout")
     public String logout(){
-        currUsername = null;
-        currPassword = null;
+
+        SecurityContextHolder.clearContext();
+
         return "redirect:/login";
     }
 
@@ -79,6 +81,8 @@ public class AppController {
     public String registerAccount(@ModelAttribute Users user){
         List<Users> test = usersRepo.checkUser(user.getUsername());
         if(test.isEmpty()){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRole("USER");
             usersRepo.save(user);
             return "redirect:/login";
         }
@@ -91,25 +95,21 @@ public class AppController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model m){
-        if(currUsername == null){
-            return "redirect:/login";
-        }
-        else{
-            List<Habit> habits = habitsRepo.getGoals(currUsername);
+
+
+            List<Habit> habits = habitsRepo.getGoals(SecurityContextHolder.getContext().getAuthentication().getName());
             m.addAttribute("habits", habits);//habits added to model, used to pass data to thymeleaf in html file
             return "dashboardPage";
-        }
+
     }
 
     @GetMapping("/addGoal")
     public String addGoal(){
-        if(currUsername == null){
-            return "redirect:/login";
-        }
-        else {
+
             return "addGoalPage";
-        }
     }
+
+
     @PostMapping("/addingGoal")
     public String addingGoal(
             @RequestParam String name,
@@ -117,17 +117,11 @@ public class AppController {
             RedirectAttributes redirectAttributes) {
 
 
-        if(currUsername == null){
-
-            redirectAttributes.addFlashAttribute("loginError", "Please log in to add a habit.");
-            return "redirect:/login";
-        }
-
-
         String trimmedName = name.trim();
 
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        Optional<Habit> existingHabit = habitsRepo.findByUsernameAndNameIgnoreCase(currUsername, trimmedName);
+        Optional<Habit> existingHabit = habitsRepo.findByUsernameAndNameIgnoreCase(userName, trimmedName);
 
 
         if (existingHabit.isPresent()) {
@@ -144,8 +138,9 @@ public class AppController {
         } else {
 
             // Create the new Habit object using the correct constructor
-            Habit h = new Habit(currUsername, trimmedName, description);
+            Habit h = new Habit(userName, trimmedName, description);
             // Save the new habit to the database
+
             habitsRepo.save(h);
 
             redirectAttributes.addFlashAttribute("successMessage",
@@ -157,28 +152,25 @@ public class AppController {
 
     @GetMapping("/removeGoal")
     public String removeGoal(Model m){
-        if(currUsername == null){
-            return "redirect:/login";
-        }
-        else {
-            List<Habit> habits = habitsRepo.getGoals(currUsername);
+
+
+
+            List<Habit> habits = habitsRepo.getGoals(SecurityContextHolder.getContext().getAuthentication().getName());
             m.addAttribute("habits", habits);//habits added to model, used to pass data to thymeleaf in html file
             return "removeGoalPage";
-        }
+
     }
     @PostMapping("/removeGoal")
     public String removingGoal(@RequestParam String name){
-        habitsRepo.deleteByName(currUsername, name);
+        habitsRepo.deleteByName(SecurityContextHolder.getContext().getAuthentication().getName(), name);
         return "redirect:/dashboard";
     }
 
     @PostMapping("/updateGoalStatus")
     @ResponseBody
     public String updateGoalStatus(@RequestParam String name, @RequestParam boolean isCompleted) {
-        if (currUsername == null) {
-            return "error: not logged in";
-        }
-        habitsRepo.checkHabit(currUsername, name, isCompleted);
+
+        habitsRepo.checkHabit(SecurityContextHolder.getContext().getAuthentication().getName(), name, isCompleted);
         return "success";
     }
 }

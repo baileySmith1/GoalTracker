@@ -1,0 +1,9 @@
+org/example/MavenProject/DBModel/Habit.class
+org/example/MavenProject/MyUserDetailsService.class
+org/example/MavenProject/AuthRequest.class
+org/example/MavenProject/AppController.class
+org/example/MavenProject/DBRepository/HabitRepo.class
+org/example/MavenProject/GoalTrackerApplication.class
+org/example/MavenProject/Configs/WebSecurityConfig.class
+org/example/MavenProject/DBRepository/UsersRepo.class
+org/example/MavenProject/DBModel/Users.class

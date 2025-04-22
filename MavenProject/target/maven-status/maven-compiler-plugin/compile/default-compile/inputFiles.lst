@@ -1,0 +1,9 @@
+/home/nate-romack/Code/GoalTracker/MavenProject/src/main/java/org/example/MavenProject/AppController.java
+/home/nate-romack/Code/GoalTracker/MavenProject/src/main/java/org/example/MavenProject/AuthRequest.java
+/home/nate-romack/Code/GoalTracker/MavenProject/src/main/java/org/example/MavenProject/Configs/WebSecurityConfig.java
+/home/nate-romack/Code/GoalTracker/MavenProject/src/main/java/org/example/MavenProject/DBModel/Habit.java
+/home/nate-romack/Code/GoalTracker/MavenProject/src/main/java/org/example/MavenProject/DBModel/Users.java
+/home/nate-romack/Code/GoalTracker/MavenProject/src/main/java/org/example/MavenProject/DBRepository/HabitRepo.java
+/home/nate-romack/Code/GoalTracker/MavenProject/src/main/java/org/example/MavenProject/DBRepository/UsersRepo.java
+/home/nate-romack/Code/GoalTracker/MavenProject/src/main/java/org/example/MavenProject/GoalTrackerApplication.java
+/home/nate-romack/Code/GoalTracker/MavenProject/src/main/java/org/example/MavenProject/MyUserDetailsService.java

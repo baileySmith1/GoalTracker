@@ -23,19 +23,24 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class WebSecurityConfig {
 
 
-    @Autowired
-    private MyUserDetailsService userDetailsService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Bean
-    public SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/createAccount", "/register").permitAll()
+                        .requestMatchers("/createAccount", "/register").permitAll()
                         .anyRequest().authenticated()
+                )
+                .formLogin(form -> form.loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/dashboard")
+                        .permitAll()
+                )
+                .logout(logout  -> logout.logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
                 )
 
                 .httpBasic(withDefaults());
@@ -48,11 +53,11 @@ public class WebSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return userDetailsService;
+        return new MyUserDetailsService();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) throws Exception {
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,PasswordEncoder passwordEncoder) throws Exception {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
