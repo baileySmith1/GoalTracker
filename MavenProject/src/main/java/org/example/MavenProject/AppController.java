@@ -14,10 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-
 import java.util.Optional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -111,11 +110,10 @@ public class AppController {
 
 
     @PostMapping("/addingGoal")
+    @ResponseBody
     public String addingGoal(
             @RequestParam String name,
-            @RequestParam(required = false) String description, // Make description optional
-            RedirectAttributes redirectAttributes) {
-
+            @RequestParam(required = false) String description) {
 
         String trimmedName = name.trim();
 
@@ -125,16 +123,7 @@ public class AppController {
 
 
         if (existingHabit.isPresent()) {
-            // --- Duplicate Found ---
-            // Add error message for the view
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "You already have a habit named '" + trimmedName + "'. Please choose a different name.");
-            // Add submitted values back for form repopulation
-            redirectAttributes.addFlashAttribute("submittedName", trimmedName);
-            redirectAttributes.addFlashAttribute("submittedDescription", description);
-            // Redirect back to the add form
-            return "redirect:/addGoal";
-
+            return "error: You already have a habit named '" + trimmedName + "'. Please choose a different name.";
         } else {
 
             // Create the new Habit object using the correct constructor
@@ -142,11 +131,7 @@ public class AppController {
             // Save the new habit to the database
 
             habitsRepo.save(h);
-
-            redirectAttributes.addFlashAttribute("successMessage",
-                    "Habit '" + trimmedName + "' added successfully!");
-            // Redirect to the dashboard
-            return "redirect:/dashboard";
+            return "success";
         }
     }
 
