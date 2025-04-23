@@ -5,27 +5,185 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Habit Tracker</title>
     <link rel="stylesheet" href="./styles.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="goal-list">
             <h1>Daily Habit Tracker</h1>
-            <div class="goal checked" th:each="habit : ${habits}">
+            <div th:if="${#lists.isEmpty(habits)}" class="no-goals-message">
+                <p>No goals yet, try adding one!</p>
+            </div>
+            <div th:each="habit : ${habits}" 
+                 th:classappend="${habit.completed} ? 'checked' : ''" 
+                 class="goal">
                 <span th:text="${habit.name}"></span>
                 <span th:text="${habit.description}"></span>
                 <div>
                     <label class="container1">
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" 
+                               th:checked="${habit.completed}"
+                               th:data-name="${habit.name}"
+                               onchange="updateGoalStatus(this)">
                         <span class="checkmark"></span>
                     </label>
                 </div>
             </div>
         </div>
         <div class="side-buttons">
-            <a href="/addGoal"><img src="images/plus.png" alt="Add Goal" /></a>
-            <a href="/removeGoal"><img src="images/minus.png" alt="Remove Goal" /></a>
+            <button onclick="openAddModal()"><img src="images/plus.png" alt="Add Goal" /></button>
+            <button onclick="openRemoveModal()"><img src="images/minus.png" alt="Remove Goal" /></button>
             <a href="/logout"><img src="images/logout.png" alt="Logout"/></a>
         </div>
     </div>
+
+    <!-- Add Goal Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddModal()">&times;</span>
+            <h2>Add New Goal</h2>
+            <div id="addError" class="error-message" style="display: none;"></div>
+            <div id="addSuccess" class="success-message" style="display: none;"></div>
+            <form id="addGoalForm" onsubmit="return handleAddGoal(event)">
+                <label for="name">Goal Name:</label><br>
+                <input type="text" id="name" name="name" required><br>
+                <label for="description">Goal Description:</label><br>
+                <textarea id="description" name="description" rows="5" cols="30"></textarea><br>
+                <input type="submit" value="Add Goal">
+            </form>
+        </div>
+    </div>
+
+    <!-- Remove Goal Modal -->
+    <div id="removeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRemoveModal()">&times;</span>
+            <h2>Remove Goal</h2>
+            <form id="removeGoalForm" onsubmit="return handleRemoveGoal(event)">
+                <label for="goalToRemove">Select a Goal to Remove:</label><br>
+                <select id="goalToRemove" name="name" required>
+                    <option th:each="habit : ${habits}" th:value="${habit.name}" th:text="${habit.name}"></option>
+                </select><br><br>
+                <input type="submit" value="Remove Goal">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function updateGoalStatus(checkbox) {
+            const goalName = checkbox.dataset.name;
+            const isCompleted = checkbox.checked;
+            const goalDiv = checkbox.closest('.goal');
+            
+            $.ajax({
+                url: '/updateGoalStatus',
+                method: 'POST',
+                data: {
+                    name: goalName,
+                    isCompleted: isCompleted
+                },
+                success: function(response) {
+                    if (response === 'success') {
+                        if (isCompleted) {
+                            goalDiv.classList.add('checked');
+                        } else {
+                            goalDiv.classList.remove('checked');
+                        }
+                    }
+                },
+                error: function() {
+                    checkbox.checked = !isCompleted;
+                    alert('Failed to update goal status. Please try again.');
+                }
+            });
+        }
+
+        // Modal functions
+        function openAddModal() {
+            document.getElementById('addModal').style.display = 'block';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+            document.getElementById('addError').style.display = 'none';
+            document.getElementById('addSuccess').style.display = 'none';
+            document.getElementById('addGoalForm').reset();
+        }
+
+        function openRemoveModal() {
+            document.getElementById('removeModal').style.display = 'block';
+        }
+
+        function closeRemoveModal() {
+            document.getElementById('removeModal').style.display = 'none';
+        }
+
+        // Handle form submissions
+        function handleAddGoal(event) {
+            event.preventDefault();
+            const formData = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value
+            };
+
+            $.ajax({
+                url: '/addingGoal',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.startsWith('error:')) {
+                        document.getElementById('addError').textContent = response.substring(7);
+                        document.getElementById('addError').style.display = 'block';
+                        document.getElementById('addSuccess').style.display = 'none';
+                    } else {
+                        document.getElementById('addSuccess').textContent = 'Goal added successfully!';
+                        document.getElementById('addSuccess').style.display = 'block';
+                        document.getElementById('addError').style.display = 'none';
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                },
+                error: function() {
+                    document.getElementById('addError').textContent = 'Failed to add goal. Please try again.';
+                    document.getElementById('addError').style.display = 'block';
+                    document.getElementById('addSuccess').style.display = 'none';
+                }
+            });
+            return false;
+        }
+
+        function handleRemoveGoal(event) {
+            event.preventDefault();
+            const formData = {
+                name: document.getElementById('goalToRemove').value
+            };
+
+            $.ajax({
+                url: '/removeGoal',
+                method: 'POST',
+                data: formData,
+                success: function() {
+                    window.location.reload();
+                },
+                error: function() {
+                    alert('Failed to remove goal. Please try again.');
+                }
+            });
+            return false;
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+                if (event.target.id === 'addModal') {
+                    document.getElementById('addError').style.display = 'none';
+                    document.getElementById('addSuccess').style.display = 'none';
+                    document.getElementById('addGoalForm').reset();
+                }
+            }
+        }
+    </script>
 </body>
 </html>
